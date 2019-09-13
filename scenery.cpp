@@ -9,7 +9,7 @@ float p=0.75,q=0.47,r=0.14;
 float e=0.90,f=0.91,g=0.98;
 int count=0;
 
-int light=1,day=1,plane=0,comet=0,xm=900,bird=0;      
+int light=1,day=1,plane=0,comet=0,xm=900,bird=0;       //different objects
 char ch;
 
 void declare(char *string)
