@@ -40,3 +40,26 @@ glFlush();
 //actual boundary fill
 void(boundaryfill(int x, int y, int fillc, int boundaryc)
 {
+float color[3];
+getpixel(x,y,color);
+if((current!=boundary)&&(current!=fill))
+{
+setpixel(x,y,fill);
+floodfill4(x+1,y,fill,boundary);
+void myinit()   
+{      
+glViewport(0,0,600,500);     
+gluOrtho2D(0.0,(GLdouble)600,0.0,(GLdouble)500);     
+}   
+int main(int argc, char** argv)   
+{   
+glutInit(&argc,argv);   
+glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);   
+glutInitWindowSize(600,500);   
+glutCreateWindow("Boundary-Fill-Recursive");   
+glutDisplayFunc(display);   
+myinit();   
+glutMouseFunc(mouse);   
+glutMainLoop();   
+return 0;
+}  
