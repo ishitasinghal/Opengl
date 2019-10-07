@@ -1,18 +1,35 @@
 #include<stdio.h>
-#include<GL/glut.h>
+#include <GL/freeglut.h>
+#include <GL/gl.h>
+#include <GL/glut.h>
 
-void setpixel(int x, int y, float c[3])    //this function sets the pixel
-{
-glBegin(GL_POINTS);
-glColor3f(1.0, 0.0, 1.0);
-glVertex2f(x,y);
-glEnd();
-glFlush();
+typedef struct Point {
+    GLint x;
+    GLint y;
 }
-//this function returns the pixel data from the frame buffer
-void getpixel(int x, int y, float pixels[3])
+Point;
+
+typedef struct Color {
+GLfloat r;
+GLfloat g;
+GLfloat b;
+}
+Color;
+
+void setpixel(int x, int y)
 {
-glReadPixels(x,y,1.0,1.0,GL_RGB,GL_FLOAT,pixels);
+glColor3f(0.5, 1.0, 0.0);   
+glBegin(GL_POINTS);
+glVertex2i(x, y);  
+glEnd();
+glFlush(); 
+}
+
+//this function returns the pixel data from the frame buffer
+Color getpixel(GLint x, GLint y) {
+    Color color;
+    glReadPixels(x, y, 1, 1, GL_RGB, GL_FLOAT, &color);
+    return color;
 }
  
 //drawing a polygon to fill
@@ -29,7 +46,7 @@ glFlush();
 }
 
 //display function
-void display()
+void display(void)
 {
 glClearColor(0.2, 0.4,0.0, 1.0);
 glClear(GL_COLOR_BUFFER_BIT);
@@ -38,25 +55,22 @@ glFlush();
 }
 
 //actual boundary fill
-void boundaryfill(int x, int y, int fillc, int boundaryc)
+void boundaryfill(int x, int y, Color fillc, Color boundaryc)
 {
-float p[3]
-getpixel(x, y, float p[3]);
-if((p[0]!=boundaryc[0] && (p[1])!=boundaryc[1] && (p[2])!=boundaryc[2]) && (p[0]!=fillc[0] && (p[1])!=fillc[1] && (p[2])!=fillc[2]))
+Color color;
+color = getpixel(x,y);
+if(color.r == fillc.r && color.g == fillc.g && color.b == fillc.b)
 {
-setpixel(x, y, fillc);
-boundaryfill(x+1, y, fillc, boundaryc);
-boundaryfill(x-1, y, fillc, boundaryc);
-boundaryfill(x, y+1, fillc, boundaryc);
-boundaryfill(x, y-1, fillc, boundaryc);
-}
-}
-float color[3];
-getpixel(x,y,color);
-if((current!=boundaryc)&&(current!=fillc))
-{
-setpixel(x,y,fillc);
+//setcolor(fillc) ;
+setpixel(x,y);
 boundaryfill(x+1,y,fillc,boundaryc);
+boundaryfill(x-1,y,fillc,boundaryc);
+boundaryfill(x,y+1,fillc,boundaryc);
+boundaryfill(x,y-1,fillc,boundaryc);
+}
+}
+
+
 void myinit()   
 {      
 glViewport(0,0,600,500);     
@@ -67,7 +81,8 @@ int main(int argc, char** argv)
 glutInit(&argc,argv);   
 glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);   
 glutInitWindowSize(600,500);   
-glutCreateWindow("Boundary-Fill-Recursive");   
+glutCreateWindow("Boundary-Fill-Recursive"); 
+polygon(2,5,7,9);
 glutDisplayFunc(display);   
 myinit();      
 glutMainLoop();   
