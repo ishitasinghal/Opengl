@@ -42,7 +42,8 @@ void boundaryfill(int x, int y, int fillc, int boundaryc)
 {
 float p[3]
 getpixel(x, y, float p[3]);
-if(currentColor != boundaryc && currentColor != boundaryc && currentColor != boundaryc) {
+if((p[0]!=boundaryc[0] && (p[1])!=boundaryc[1] && (p[2])!=boundaryc[2]) && (p[0]!=fillc[0] && (p[1])!=fillc[1] && (p[2])!=fillc[2]))
+{
 setpixel(x, y, fillc);
 boundaryfill(x+1, y, fillc, boundaryc);
 boundaryfill(x-1, y, fillc, boundaryc);
@@ -52,10 +53,10 @@ boundaryfill(x, y-1, fillc, boundaryc);
 }
 float color[3];
 getpixel(x,y,color);
-if((current!=boundary)&&(current!=fill))
+if((current!=boundaryc)&&(current!=fillc))
 {
-setpixel(x,y,fill);
-floodfill4(x+1,y,fill,boundary);
+setpixel(x,y,fillc);
+boundaryfill(x+1,y,fillc,boundaryc);
 void myinit()   
 {      
 glViewport(0,0,600,500);     
@@ -68,8 +69,7 @@ glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
 glutInitWindowSize(600,500);   
 glutCreateWindow("Boundary-Fill-Recursive");   
 glutDisplayFunc(display);   
-myinit();   
-glutMouseFunc(mouse);   
+myinit();      
 glutMainLoop();   
 return 0;
 }  
