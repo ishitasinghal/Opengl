@@ -40,6 +40,14 @@ glFlush();
 //actual boundary fill
 void(boundaryfill(int x, int y, int fillc, int boundaryc)
 {
+currentColor = getpixel(x, y, float p[3]);
+if(currentColor != boundaryc && currentColor != boundaryc && currentColor != boundaryc) {
+setPixelColor(x, y, fillColor);
+boundaryfill(x+1, y, fillc, boundaryc);
+boundaryfill(x-1, y, fillc, boundaryc);
+boundaryfill(x, y+1, fillc, boundaryc);
+boundaryfill(x, y-1, fillc, boundaryc);
+}
 float color[3];
 getpixel(x,y,color);
 if((current!=boundary)&&(current!=fill))
